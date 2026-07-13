@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual Environment
+.venv/
+venv/
+
+# Environment Variables
+.env
+.env.*
+
+# Logs
+*.log
+
+# Python Cache
+.pytest_cache/
+.mypy_cache/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+
+# React Build
+dist/
+build/
+
+# Docker
+*.tar
+
+# Lambda
+lambda.zip
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.tfvars
+*.tfvars
+
+# AWS
+.aws/
+
+# Coverage
+.coverage
+htmlcov/

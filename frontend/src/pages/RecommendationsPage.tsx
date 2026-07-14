@@ -40,8 +40,33 @@ export default function RecommendationsPage() {
     );
   }
 
+  const totalRecommendations = data.length;
+
+  const highPriorityCount = data.filter(
+    (item) => item.priority === 'High'
+  ).length;
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+
+      {/* Summary */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+          <p className="text-sm text-slate-400">Total Recommendations</p>
+          <h2 className="mt-2 text-3xl font-bold text-cyan-300">
+            {totalRecommendations}
+          </h2>
+        </div>
+
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+          <p className="text-sm text-slate-400">High Priority</p>
+          <h2 className="mt-2 text-3xl font-bold text-red-300">
+            {highPriorityCount}
+          </h2>
+        </div>
+      </div>
+
+      {/* Recommendation Cards */}
       {data.map((item, index) => (
         <div
           key={`${item.resource}-${item.title}-${index}`}

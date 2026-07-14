@@ -1,36 +1,94 @@
-from datetime import datetime
+from io import StringIO, BytesIO
 
+import pandas as pd
 from fastapi import APIRouter
+from fastapi.responses import StreamingResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
-from app.services.aws.cost_service import CostService
-from app.services.aws.ec2_service import EC2Service
-from app.services.aws.s3_service import S3Service
-from app.services.aws.ebs_service import EBSService
-from app.services.recommendation_engine import RecommendationEngine
+from app.api.routers.reports import get_reports
 
-router = APIRouter(tags=["reports"])
+router = APIRouter(tags=["export"])
 
 
-@router.get("/reports")
-def get_reports():
+@router.get("/export/csv")
+def export_csv():
 
-    cost = CostService().get_monthly_cost()
+    reports = get_reports()
 
-    ec2 = EC2Service().list_instances()
-    s3 = S3Service().list_buckets()
-    ebs = EBSService().list_volumes()
+    df = pd.DataFrame(reports)
 
-    recommendations = RecommendationEngine().generate_recommendations()
+    output = StringIO()
+    df.to_csv(output, index=False)
+    output.seek(0)
 
-    total_resources = len(ec2) + len(s3) + len(ebs)
+    return StreamingResponse(
+        output,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": "attachment; filename=cloudoptimizer-report.csv"
+        },
+    )
 
-    return [
-        {
-            "id": "1",
-            "scanDate": datetime.now().strftime("%Y-%m-%d"),
-            "resourcesScanned": total_resources,
-            "recommendationsFound": len(recommendations),
-            "costBefore": cost["monthlyCost"],
-            "costAfter": cost["monthlyCost"],
-        }
-    ]
+
+@router.get("/export/pdf")
+def export_pdf():
+
+    reports = get_reports()
+
+    buffer = BytesIO()
+
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+
+    pdf.setTitle("CloudOptimizer Report")
+
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawString(50, 760, "CloudOptimizer Report")
+
+    pdf.setFont("Helvetica", 12)
+
+    y = 720
+
+    for report in reports:
+        pdf.drawString(50, y, f"Scan Date: {report['scanDate']}")
+        y -= 20
+
+        pdf.drawString(
+            50,
+            y,
+            f"Resources Scanned: {report['resourcesScanned']}",
+        )
+        y -= 20
+
+        pdf.drawString(
+            50,
+            y,
+            f"Recommendations: {report['recommendationsFound']}",
+        )
+        y -= 20
+
+        pdf.drawString(
+            50,
+            y,
+            f"Cost Before: ${report['costBefore']}",
+        )
+        y -= 20
+
+        pdf.drawString(
+            50,
+            y,
+            f"Cost After: ${report['costAfter']}",
+        )
+        y -= 40
+
+    pdf.save()
+
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": "attachment; filename=cloudoptimizer-report.pdf"
+        },
+    )

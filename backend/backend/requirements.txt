@@ -1,5 +1,0 @@
-fastapi==0.115.4
-uvicorn[standard]==0.32.0
-pydantic==2.10.2
-boto3==1.35.3
-python-dotenv==1.0.1

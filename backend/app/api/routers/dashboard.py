@@ -4,7 +4,7 @@ from app.services.aws.cost_service import CostService
 from app.services.aws.ec2_service import EC2Service
 from app.services.aws.s3_service import S3Service
 from app.services.aws.ebs_service import EBSService
-from app.services.recommendation_engine import RecommendationEngine
+from app.services.aws.dynamodb_service import DynamoDBService
 
 router = APIRouter(tags=["dashboard"])
 
@@ -18,7 +18,8 @@ def get_dashboard():
     s3 = S3Service().list_buckets()
     ebs = EBSService().list_volumes()
 
-    recommendations = RecommendationEngine().generate_recommendations()
+    db = DynamoDBService()
+    recommendations = db.get_all_recommendations()
 
     high = len(
         [r for r in recommendations if r["priority"] == "High"]
@@ -41,36 +42,36 @@ def get_dashboard():
         "recentScanStatus": "Completed",
 
         "latestRecommendations": [
-        {
-            "id": str(index + 1),
-            "title": item["title"],
-            "priority": item["priority"],
-            "savings": item["estimatedSavings"]
-            if isinstance(item["estimatedSavings"], (int, float))
-            else 0,
-        }
-        for index, item in enumerate(recommendations)
-    ],
+            {
+                "id": str(index + 1),
+                "title": item["title"],
+                "priority": item["priority"],
+                "savings": item["estimatedSavings"]
+                if isinstance(item["estimatedSavings"], (int, float))
+                else 0,
+            }
+            for index, item in enumerate(recommendations)
+        ],
 
-    "resourceDistribution": [
-        {
-            "name": "EC2",
-            "value": len(ec2),
-        },
-        {
-            "name": "S3",
-            "value": len(s3),
-        },
-        {
-            "name": "EBS",
-            "value": len(ebs),
-        },
-    ],
+        "resourceDistribution": [
+            {
+                "name": "EC2",
+                "value": len(ec2),
+            },
+            {
+                "name": "S3",
+                "value": len(s3),
+            },
+            {
+                "name": "EBS",
+                "value": len(ebs),
+            },
+        ],
 
-    "costTrend": [
-        {
-            "month": "Current",
-            "cost": cost["monthlyCost"],
-        }
-    ],
+        "costTrend": [
+            {
+                "month": "Current",
+                "cost": cost["monthlyCost"],
+            }
+        ],
     }

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/v1",
+  baseURL: "http://16.16.173.251:8000/api/v1",
 });
 
 export const fetchDashboard = async () => {

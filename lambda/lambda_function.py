@@ -11,3 +11,8 @@ def lambda_handler(event, context):
         "statusCode": 200,
         "recommendationsGenerated": len(recommendations)
     }
+
+
+if __name__ == "__main__":
+    result = lambda_handler({}, {})
+    print(result)

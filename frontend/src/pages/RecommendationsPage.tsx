@@ -17,10 +17,17 @@ export default function RecommendationsPage() {
         <div key={item.id} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <div className="mb-2 flex items-center gap-3">
+             <div className="mb-2 flex items-center gap-3">
                 <h2 className="text-xl font-semibold">{item.title}</h2>
-                <span className="rounded-full bg-cyan-500/10 px-2 py-1 text-xs text-cyan-300">{item.priority}</span>
-              </div>
+
+                <span className="rounded-full bg-cyan-500/10 px-2 py-1 text-xs text-cyan-300">
+               {item.priority}
+           </span>
+
+           <span className="rounded-full bg-violet-500/10 px-2 py-1 text-xs text-violet-300">
+           {item.service}
+  </span>
+</div>
               <p className="mb-2 text-sm text-slate-400">{item.description}</p>
               <p className="text-sm text-slate-500">Resource: {item.resource}</p>
             </div>

@@ -26,7 +26,7 @@ class EBSService:
                 "id": volume["VolumeId"],
                 "type": volume["VolumeType"],
                 "size": volume["Size"],
-                "state": volume["State"]["Name"],
+                "state": volume["State"],
                 "attached": attached,
                 "availabilityZone": volume["AvailabilityZone"],
                 "encrypted": volume["Encrypted"],

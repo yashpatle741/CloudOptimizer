@@ -57,3 +57,5 @@ terraform.tfvars
 # Coverage
 .coverage
 htmlcov/
+
+awscliv2.zip

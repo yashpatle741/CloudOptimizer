@@ -76,13 +76,14 @@ export default function ReportsPage() {
 
           <div className="flex gap-2">
             <button
-              onClick={() => {
-    alert("CSV button clicked");
-  }}
-  className="flex items-center gap-2 rounded-xl border border-slate-700 px-3 py-2 text-sm transition hover:bg-slate-800"
+             onClick={() => {
+  window.location.href =
+    "http://16.16.173.251:8000/api/v1/export/csv";
+}}
+                        className="flex items-center gap-2 rounded-xl border border-slate-700 px-3 py-2 text-sm transition hover:bg-slate-800"
 >
-  <Download size={16} />
-  CSV
+            <Download size={16} />
+                  CSV
             </button>
 
             <button className="flex items-center gap-2 rounded-xl border border-slate-700 px-3 py-2 text-sm transition hover:bg-slate-800">

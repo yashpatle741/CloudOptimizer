@@ -28,6 +28,7 @@ class EBSService:
                 "state": volume["State"],
                 "attached": attached,
                 "availabilityZone": volume["AvailabilityZone"],
+                "region": settings.aws_region,
                 "encrypted": volume["Encrypted"],
                 "created": volume["CreateTime"].isoformat(),
             })

@@ -17,6 +17,9 @@ class RecommendationEngine:
 
         db = DynamoDBService()
 
+        # Remove old recommendations before saving new ones
+        db.delete_all_recommendations()
+
         for recommendation in recommendations:
             db.save_recommendation({
                 "resourceId": recommendation["resource"],
@@ -36,16 +39,14 @@ class RecommendationEngine:
         ec2_instances = EC2Service().list_instances()
 
         for instance in ec2_instances:
-
             if instance["state"] == "stopped":
-
                 recommendations.append({
                     "resource": instance["name"],
                     "service": "EC2",
                     "priority": "High",
                     "title": "Terminate stopped EC2 instance",
                     "description": "Stopped instances may still incur storage charges.",
-                    "estimatedSavings": "Review Required"
+                    "estimatedSavings": "Review Required",
                 })
 
         return recommendations
@@ -58,25 +59,23 @@ class RecommendationEngine:
         for bucket in buckets:
 
             if bucket["public"]:
-
                 recommendations.append({
                     "resource": bucket["name"],
                     "service": "S3",
                     "priority": "High",
                     "title": "Enable Block Public Access",
                     "description": "Bucket is publicly accessible.",
-                    "estimatedSavings": "-"
+                    "estimatedSavings": "-",
                 })
 
             if not bucket["lifecycle"]:
-
                 recommendations.append({
                     "resource": bucket["name"],
                     "service": "S3",
                     "priority": "Medium",
                     "title": "Enable Lifecycle Policy",
                     "description": "Lifecycle rules can reduce storage costs.",
-                    "estimatedSavings": "Potential"
+                    "estimatedSavings": "Potential",
                 })
 
         return recommendations
@@ -87,16 +86,14 @@ class RecommendationEngine:
         volumes = EBSService().list_volumes()
 
         for volume in volumes:
-
             if not volume["attached"]:
-
                 recommendations.append({
                     "resource": volume["id"],
                     "service": "EBS",
                     "priority": "High",
                     "title": "Delete Unattached Volume",
                     "description": "Unattached EBS volumes continue to incur charges.",
-                    "estimatedSavings": "Depends on size"
+                    "estimatedSavings": "Depends on size",
                 })
 
         return recommendations

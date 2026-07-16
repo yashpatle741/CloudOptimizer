@@ -1,9 +1,14 @@
 output "api_id" {
-  description = "ID of the HTTP API."
+  description = "HTTP API ID."
   value       = aws_apigatewayv2_api.this.id
 }
 
 output "api_endpoint" {
-  description = "Endpoint URL for the HTTP API."
+  description = "HTTP API endpoint."
   value       = aws_apigatewayv2_api.this.api_endpoint
+}
+
+output "api_execution_arn" {
+  description = "HTTP API execution ARN."
+  value       = aws_apigatewayv2_api.this.execution_arn
 }

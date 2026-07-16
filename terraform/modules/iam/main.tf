@@ -19,9 +19,14 @@ locals {
         resources = var.sns_topic_arns
       },
       {
-        sid       = "CostExplorerRead"
-        effect    = "Allow"
-        actions   = ["ce:GetCostAndUsage", "ce:GetDimensionValues", "ce:GetReservationUtilization", "ce:GetTags"]
+        sid    = "CostExplorerRead"
+        effect = "Allow"
+        actions = [
+          "ce:GetCostAndUsage",
+          "ce:GetDimensionValues",
+          "ce:GetReservationUtilization",
+          "ce:GetTags"
+        ]
         resources = ["*"]
       },
       {
@@ -34,6 +39,15 @@ locals {
         sid       = "EBSDescribe"
         effect    = "Allow"
         actions   = ["ebs:Describe*"]
+        resources = ["*"]
+      },
+      {
+        sid    = "XRayAccess"
+        effect = "Allow"
+        actions = [
+          "xray:PutTraceSegments",
+          "xray:PutTelemetryRecords"
+        ]
         resources = ["*"]
       }
     ],

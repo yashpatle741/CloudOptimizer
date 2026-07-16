@@ -4,6 +4,7 @@ resource "aws_dynamodb_table" "this" {
   hash_key                    = "PK"
   range_key                   = "SK"
   deletion_protection_enabled = var.deletion_protection_enabled
+
   point_in_time_recovery {
     enabled = var.point_in_time_recovery_enabled
   }
@@ -20,6 +21,10 @@ resource "aws_dynamodb_table" "this" {
   attribute {
     name = "SK"
     type = "S"
+  }
+
+  lifecycle {
+    prevent_destroy = false
   }
 
   tags = merge(

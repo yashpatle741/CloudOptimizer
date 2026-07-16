@@ -5,6 +5,10 @@ resource "aws_cloudwatch_log_group" "this" {
   retention_in_days = var.log_retention_in_days
   kms_key_id        = var.kms_key_id
 
+  lifecycle {
+    prevent_destroy = false
+  }
+
   tags = merge(
     var.tags,
     {

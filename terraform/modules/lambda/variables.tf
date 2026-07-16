@@ -1,13 +1,11 @@
 variable "project_name" {
   description = "Project name used for naming and tagging."
   type        = string
-  default     = "CloudOptimizer"
 }
 
 variable "environment" {
   description = "Deployment environment name."
   type        = string
-  default     = "dev"
 }
 
 variable "function_name" {
@@ -38,7 +36,7 @@ variable "handler" {
 }
 
 variable "runtime" {
-  description = "Python runtime version for the Lambda function."
+  description = "Python runtime version."
   type        = string
   default     = "python3.13"
 }
@@ -47,40 +45,56 @@ variable "architecture" {
   description = "Lambda architecture."
   type        = string
   default     = "arm64"
+
+  validation {
+    condition     = contains(["arm64", "x86_64"], var.architecture)
+    error_message = "Architecture must be arm64 or x86_64."
+  }
 }
 
 variable "timeout" {
-  description = "Maximum execution time for the Lambda function in seconds."
+  description = "Lambda timeout in seconds."
   type        = number
   default     = 30
 }
 
 variable "memory_size" {
-  description = "Amount of memory allocated to the Lambda function in MB."
+  description = "Lambda memory in MB."
   type        = number
   default     = 512
+
+  validation {
+    condition     = var.memory_size >= 128 && var.memory_size <= 10240
+    error_message = "Memory must be between 128 and 10240 MB."
+  }
+}
+
+variable "log_retention_in_days" {
+  description = "CloudWatch log retention."
+  type        = number
+  default     = 30
 }
 
 variable "environment_variables" {
-  description = "Environment variables for the Lambda function."
+  description = "Environment variables."
   type        = map(string)
   default     = {}
 }
 
 variable "reserved_concurrent_executions" {
-  description = "Reserved concurrency value for the Lambda function."
+  description = "Reserved concurrency."
   type        = number
   default     = -1
 }
 
 variable "publish" {
-  description = "Whether to publish a new version of the Lambda function."
+  description = "Publish a new Lambda version."
   type        = bool
   default     = false
 }
 
 variable "tags" {
-  description = "Additional tags to merge into the Lambda function."
+  description = "Resource tags."
   type        = map(string)
   default     = {}
 }

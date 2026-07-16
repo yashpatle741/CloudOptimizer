@@ -1,13 +1,11 @@
 variable "project_name" {
   description = "Project name used for naming and tagging."
   type        = string
-  default     = "CloudOptimizer"
 }
 
 variable "environment" {
   description = "Deployment environment name."
   type        = string
-  default     = "dev"
 }
 
 variable "table_name" {

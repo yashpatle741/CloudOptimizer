@@ -1,55 +1,67 @@
 variable "project_name" {
-  description = "Project name used for naming and tagging."
+  description = "Project name."
   type        = string
-  default     = "CloudOptimizer"
 }
 
 variable "environment" {
-  description = "Deployment environment name."
+  description = "Deployment environment."
   type        = string
-  default     = "dev"
 }
 
 variable "rule_name" {
-  description = "Name of the EventBridge rule."
+  description = "EventBridge rule name."
   type        = string
 }
 
 variable "description" {
-  description = "Description of the EventBridge rule."
+  description = "EventBridge rule description."
   type        = string
   default     = "Scheduled CloudOptimizer scan"
 }
 
 variable "schedule_expression" {
-  description = "Cron or rate expression for the EventBridge rule."
-  type        = string
+  description = "Cron or rate expression."
+
+  type = string
+
+  validation {
+    condition = (
+      startswith(var.schedule_expression, "rate(") ||
+      startswith(var.schedule_expression, "cron(")
+    )
+    error_message = "schedule_expression must be a valid rate() or cron() expression."
+  }
 }
 
 variable "state" {
-  description = "State of the EventBridge rule."
+  description = "Rule state."
   type        = string
   default     = "ENABLED"
+
+  validation {
+    condition     = contains(["ENABLED", "DISABLED"], var.state)
+    error_message = "state must be ENABLED or DISABLED."
+  }
 }
 
 variable "lambda_function_arn" {
-  description = "ARN of the Lambda function invoked by the rule."
+  description = "Lambda ARN."
   type        = string
 }
 
 variable "lambda_function_name" {
-  description = "Name of the Lambda function invoked by the rule."
+  description = "Lambda function name."
   type        = string
 }
 
 variable "target_id" {
-  description = "Identifier for the EventBridge target."
+  description = "Event target ID."
   type        = string
   default     = "scanner-target"
 }
 
 variable "tags" {
-  description = "Additional tags to merge into the EventBridge resources."
+  description = "Resource tags."
   type        = map(string)
   default     = {}
 }

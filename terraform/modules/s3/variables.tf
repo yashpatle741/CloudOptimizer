@@ -1,33 +1,35 @@
 variable "project_name" {
-  description = "Project name used for naming and tagging."
+  description = "Project name."
   type        = string
-  default     = "CloudOptimizer"
 }
 
 variable "environment" {
-  description = "Deployment environment name."
+  description = "Deployment environment."
   type        = string
-  default     = "dev"
 }
 
 variable "bucket_name" {
-  description = "Name of the S3 bucket used for reports."
+  description = "S3 bucket name."
   type        = string
 }
 
 variable "lifecycle_rules" {
-  description = "Optional lifecycle rules to apply to the bucket."
+  description = "S3 lifecycle rules."
+
   type = list(object({
-    id              = string
-    status          = string
-    filter          = optional(object({ prefix = optional(string) }))
+    id     = string
+    status = string
+    filter = optional(object({
+      prefix = optional(string)
+    }))
     expiration_days = optional(number)
   }))
+
   default = []
 }
 
 variable "tags" {
-  description = "Additional tags to merge into the bucket."
+  description = "Resource tags."
   type        = map(string)
   default     = {}
 }

@@ -37,4 +37,8 @@ resource "aws_sns_topic_subscription" "lambda" {
   topic_arn = aws_sns_topic.this.arn
   protocol  = "lambda"
   endpoint  = var.lambda_function_arn
+
+  depends_on = [
+    aws_lambda_permission.allow_sns
+  ]
 }

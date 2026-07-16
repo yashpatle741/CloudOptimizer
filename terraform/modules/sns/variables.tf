@@ -1,46 +1,44 @@
 variable "project_name" {
-  description = "Project name used for naming and tagging."
+  description = "Project name."
   type        = string
-  default     = "CloudOptimizer"
 }
 
 variable "environment" {
-  description = "Deployment environment name."
+  description = "Deployment environment."
   type        = string
-  default     = "dev"
 }
 
 variable "topic_name" {
-  description = "Name of the SNS topic."
+  description = "SNS topic name."
   type        = string
 }
 
 variable "notification_email" {
-  description = "Email endpoint for SNS subscription."
+  description = "Email address for SNS notifications."
   type        = string
   default     = null
 }
 
 variable "email_subscription_enabled" {
-  description = "Whether to create an email subscription."
+  description = "Create email subscription."
   type        = bool
   default     = false
 }
 
 variable "lambda_function_name" {
-  description = "Optional Lambda function name to subscribe to this SNS topic."
+  description = "Lambda function name."
   type        = string
   default     = null
 }
 
 variable "lambda_function_arn" {
-  description = "Optional Lambda function ARN to use for SNS subscription."
+  description = "Lambda function ARN."
   type        = string
   default     = null
 }
 
 variable "tags" {
-  description = "Additional tags to merge into the SNS topic."
+  description = "Resource tags."
   type        = map(string)
   default     = {}
 }

@@ -17,7 +17,8 @@ module "cloudwatch" {
   environment           = var.environment
   log_group_names       = [local.lambda_log_group_name]
   log_retention_in_days = var.log_retention_in_days
-  tags                  = local.common_tags
+
+  tags = local.common_tags
 }
 
 module "dynamodb" {
@@ -59,13 +60,15 @@ module "s3" {
 module "lambda" {
   source = "./modules/lambda"
 
-  project_name  = var.project_name
-  environment   = var.environment
-  function_name = "${local.name_prefix}-scanner"
-  filename      = "${path.module}/lambda_payload.zip"
-  role_arn      = module.iam.role_arn
-  timeout       = var.lambda_timeout
-  memory_size   = var.lambda_memory_size
+  project_name          = var.project_name
+  environment           = var.environment
+  function_name         = "${local.name_prefix}-scanner"
+  filename              = "${path.module}/lambda_payload.zip"
+  role_arn              = module.iam.role_arn
+  timeout               = var.lambda_timeout
+  memory_size           = var.lambda_memory_size
+  log_retention_in_days = var.log_retention_in_days
+
   environment_variables = {
     DYNAMODB_TABLE = module.dynamodb.table_name
     SNS_TOPIC_ARN  = module.sns.topic_arn

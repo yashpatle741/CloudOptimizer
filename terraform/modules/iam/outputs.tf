@@ -1,19 +1,19 @@
 output "role_name" {
-  description = "Name of the IAM role created for Lambda execution."
+  description = "IAM role name."
   value       = aws_iam_role.lambda_execution.name
 }
 
 output "role_arn" {
-  description = "ARN of the IAM role created for Lambda execution."
+  description = "IAM role ARN."
   value       = aws_iam_role.lambda_execution.arn
 }
 
 output "policy_name" {
-  description = "Name of the IAM policy attached to the Lambda execution role."
+  description = "IAM policy name."
   value       = aws_iam_policy.lambda_execution.name
 }
 
 output "policy_arn" {
-  description = "ARN of the IAM policy attached to the Lambda execution role."
+  description = "IAM policy ARN."
   value       = aws_iam_policy.lambda_execution.arn
 }

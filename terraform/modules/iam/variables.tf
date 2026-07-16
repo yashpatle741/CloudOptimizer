@@ -1,7 +1,6 @@
 variable "project_name" {
   description = "Name of the project used for resource naming and tagging."
   type        = string
-  default     = "CloudOptimizer"
 
   validation {
     condition     = length(trimspace(var.project_name)) > 0
@@ -12,7 +11,6 @@ variable "project_name" {
 variable "environment" {
   description = "Deployment environment name such as dev, test, or prod."
   type        = string
-  default     = "dev"
 
   validation {
     condition     = can(regex("^[a-z0-9-]+$", var.environment))
@@ -33,53 +31,54 @@ variable "policy_name" {
 }
 
 variable "path" {
-  description = "Path to attach the IAM role and policy."
+  description = "Path for the IAM role and policy."
   type        = string
   default     = "/service-role/"
 
   validation {
     condition     = startswith(var.path, "/") && endswith(var.path, "/")
-    error_message = "path must start and end with a forward slash."
+    error_message = "path must start and end with '/'."
   }
 }
 
 variable "aws_region" {
-  description = "AWS region used by the module for resource targeting and tagging."
+  description = "AWS region."
   type        = string
-  default     = "eu-north-1"
 }
 
 variable "tags" {
-  description = "Additional tags to merge into all IAM resources."
+  description = "Tags applied to IAM resources."
   type        = map(string)
   default     = {}
 }
 
 variable "dynamodb_table_arns" {
-  description = "List of DynamoDB table ARNs that the Lambda execution role may access."
+  description = "DynamoDB table ARNs."
   type        = list(string)
   default     = []
 }
 
 variable "sns_topic_arns" {
-  description = "List of SNS topic ARNs that the Lambda execution role may publish to."
+  description = "SNS topic ARNs."
   type        = list(string)
   default     = []
 }
 
 variable "s3_bucket_arns" {
-  description = "List of S3 bucket ARNs that the Lambda execution role may read from."
+  description = "S3 bucket ARNs."
   type        = list(string)
   default     = []
 }
 
 variable "additional_policy_statements" {
-  description = "Optional policy statements to append to the base least-privilege policy."
+  description = "Additional IAM policy statements."
+
   type = list(object({
     sid       = optional(string)
     effect    = string
     actions   = list(string)
     resources = list(string)
   }))
+
   default = []
 }
